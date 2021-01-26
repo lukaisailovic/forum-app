@@ -1,5 +1,5 @@
 module.exports = (req,res) => {
     res.json({
-        'hello': 'world (user)'
+        user: req.user
     })
 }
