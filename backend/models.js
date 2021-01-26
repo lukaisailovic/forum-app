@@ -57,6 +57,8 @@ Post.belongsTo(User);
 User.hasMany(Post);
 Post.belongsTo(Topic);
 Topic.hasMany(Post);
+Topic.belongsTo(User);
+User.hasMany(Topic);
 
 exports.Topic = Topic;
 exports.User = User;
