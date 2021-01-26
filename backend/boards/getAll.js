@@ -1,15 +1,14 @@
-const {Board,Topic,User} = require('../models');
-
+const {Board,Topic} = require('../models');
+const Sequelize = require('sequelize')
 module.exports = async (req,res) => {
     const boards = await Board.findAll({
+        attributes: {
+            include: [[Sequelize.fn("COUNT", Sequelize.col("topics.id")), "topicCount"]]
+        },
         include: {
-            model: Topic,
-            include: {
-                model: User,
-                attributes: ['id','username']
-
-            }
-        }
+            model: Topic,attributes: []
+        },
+        group: ['boards.id']
     });
     res.json({
         boards
