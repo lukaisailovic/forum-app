@@ -3,7 +3,10 @@ const express = require('express');
 const app = express();
 const sync = require('./database/sync')
 const routers = [
-    require('./boards')
+    require('./users'),
+    require('./boards'),
+    require('./topics'),
+    require('./posts')
 ];
 
 
