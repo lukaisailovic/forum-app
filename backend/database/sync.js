@@ -1,11 +1,8 @@
-const user = require('../users/model')
-const board = require('../boards/model')
-const topic = require('../topics/model')
-const post = require('../posts/model')
+const {User,Board,Topic,Post} = require('../models')
 
 module.exports = async () => {
-    await user.sync();
-    await board.sync();
-    await topic.sync();
-    await post.sync();
+    await User.sync();
+    await Board.sync();
+    await Topic.sync();
+    await Post.sync();
 }

@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../users/model');
+const {User} = require('../models')
 const signingSecret = process.env.SIGNING_SECRET || 'secret';
 
 module.exports = async function (req, res, next) {
