@@ -39,7 +39,7 @@ module.exports.register = async (req, res) => {
     }
     let passwordHash = null;
     try {
-        passwordHash = await argon2.hash("password");
+        passwordHash = await argon2.hash(req.body.password);
     } catch (err) {
         console.log(err)
         return res.status(400).json({
