@@ -41,8 +41,8 @@ class App {
             console.log(err);
         }
     }
-    syncDatabaseTables(){
-        sync();
+    async syncDatabaseTables(){
+        await sync();
     }
 }
 module.exports = new App();
