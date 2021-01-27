@@ -1,13 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
+import auth from "./auth";
 
 Vue.use(Vuex)
 
 
 const baseURL = process.env.BACKEND_URL || 'http://localhost:3000/';
-if (typeof baseURL !== 'undefined')
-{
+if (typeof baseURL !== 'undefined') {
     axios.defaults.baseURL = baseURL;
 }
 export default new Vuex.Store({
@@ -16,6 +16,7 @@ export default new Vuex.Store({
         selectedBoardId: null,
         selectedBoard: null
     },
+    getters: {},
     mutations: {
         setBoards: (state, boards) => {
             state.boards = boards;
@@ -32,29 +33,31 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        async getBoards({commit}){
+        async getBoards({commit}) {
             try {
-                const res =  await axios.get('board');
-                if (res.status === 200){
-                    commit('setBoards',res.data.boards)
+                const res = await axios.get('board');
+                if (res.status === 200) {
+                    commit('setBoards', res.data.boards)
                 }
-            } catch (error){
+            } catch (error) {
                 console.log(error)
             }
 
         },
-        async getSelectedBoard({state,commit}){
+        async getSelectedBoard({state, commit}) {
             try {
                 const id = state.selectedBoardId;
-                const res =  await axios.get(`board/${id}`);
-                if (res.status === 200){
-                    commit('setSelectedBoard',res.data.board)
+                const res = await axios.get(`board/${id}`);
+                if (res.status === 200) {
+                    commit('setSelectedBoard', res.data.board)
                 }
-            } catch (error){
+            } catch (error) {
                 console.log(error)
             }
 
         }
     },
-    modules: {}
+    modules: {
+        auth
+    }
 })
