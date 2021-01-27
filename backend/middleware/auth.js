@@ -5,6 +5,7 @@ const signingSecret = process.env.SIGNING_SECRET || 'secret';
 module.exports = async function (req, res, next) {
     try {
         const token = req.header('Authorization');
+        console.log(token)
         if (token == null){
             return res.status(403).json({
                 message: 'Unauthorized'

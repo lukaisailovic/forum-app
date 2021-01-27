@@ -72,6 +72,29 @@ const topic = {
                 console.log(error)
                 return false;
             }
+        },
+        async reply({state, commit, dispatch},payload ){
+            try {
+                const token = localStorage.getItem('token');
+                if (token == null){
+                    return false;
+                }
+                const res = await axios.post(`post/${payload.topicId}`,{
+                    content: payload.content
+                },{
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (res.status === 200 || res.status === 201) {
+                    dispatch('fetchSelectedTopic')
+                    return true;
+                }
+
+            } catch (error) {
+                console.log(error)
+                return false;
+            }
         }
     }
 };

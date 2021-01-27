@@ -31,7 +31,7 @@ module.exports = async (req,res) => {
             },
 
         ],
-        order: [[Post, 'createdAt', 'DESC']]
+        order: [[Post, 'createdAt', 'ASC']]
 
     });
     res.json({

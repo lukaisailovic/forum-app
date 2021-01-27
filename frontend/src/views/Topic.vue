@@ -31,6 +31,32 @@
             <Posts :posts="topic.posts"/>
             </tbody>
         </table>
+        <b-row v-if="user">
+            <b-col>
+                <b-card>
+                    <b-card-body class="p-0">
+                        <h6>
+                            Reply to topic
+                        </h6>
+                        <b-form @submit.prevent="onSubmit">
+                            <b-form-textarea
+                                id="textarea"
+                                v-model="content"
+                                placeholder="Enter something..."
+                                rows="6"
+                                max-rows="6"
+                                max="150"
+                                min="10"
+                                required
+                                class="mt-4"
+                            ></b-form-textarea>
+                            <b-button type="submit" variant="success" class="mt-3">Reply</b-button>
+
+                        </b-form>
+                    </b-card-body>
+                </b-card>
+            </b-col>
+        </b-row>
 
     </div>
 </template>
@@ -45,6 +71,11 @@ export default {
     components: {
         Posts,
 
+    },
+    data(){
+        return {
+            content: ''
+        }
     },
     computed: {
         ...mapGetters({
@@ -68,7 +99,8 @@ export default {
     methods: {
         ...mapActions({
             fetchSelectedTopic: 'topic/fetchSelectedTopic',
-            removeTopic: 'topic/deleteTopic'
+            removeTopic: 'topic/deleteTopic',
+            reply: 'topic/reply'
         }),
         ...mapMutations({
             setSelectedTopicId: 'topic/setSelectedTopicId'
@@ -89,6 +121,30 @@ export default {
                     appendToast: true
                 })
             }
+        },
+        async onSubmit(){
+           const res = await this.reply({
+               topicId: this.topic.id,
+               content: this.content
+           });
+           if (res === true){
+               this.$bvToast.toast('New reply added successfully', {
+                   title: 'Success action',
+                   variant: 'success',
+                   solid: true,
+                   autoHideDelay: 3000,
+                   appendToast: true
+               })
+           } else {
+               this.$bvToast.toast('Could not reply to topic', {
+                   title: 'Error action',
+                   variant: 'danger',
+                   solid: true,
+                   autoHideDelay: 3000,
+                   appendToast: true
+               })
+           }
+           this.content = '';
         }
     },
     async mounted() {
