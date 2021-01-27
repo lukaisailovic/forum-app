@@ -15,7 +15,8 @@ module.exports = async function (req, res, next) {
         const decodedUser = decoded.data;
         const user = await User.findOne({
             where: {
-                id: decodedUser.id
+                id: decodedUser.id,
+                username: decodedUser.username
             },
             attributes: ['id','username','createdAt']
         })
