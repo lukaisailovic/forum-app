@@ -7,11 +7,11 @@ module.exports = async (req,res) => {
             message: 'Note id is required'
         });
     }
-    const boards = await Board.findOne({
+    const board = await Board.findOne({
         where: {
             id
         },
-        attributes: ['name','description'],
+        attributes: ['id','name','description'],
         include: {
             model: Topic,
             include: {
@@ -22,6 +22,6 @@ module.exports = async (req,res) => {
 
     });
     res.json({
-        boards
+        board
     })
 }
