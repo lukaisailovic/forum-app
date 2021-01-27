@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import axios from "axios";
 import auth from "./auth";
 import topic from "./topic";
+import post from "./post";
 Vue.use(Vuex)
 
 
@@ -63,6 +64,7 @@ export default new Vuex.Store({
     },
     modules: {
         auth,
-        topic
+        topic,
+        post
     }
 })

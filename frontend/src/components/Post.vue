@@ -11,7 +11,7 @@
                     {{ post.content }}
                 </p>
                 <p class="text-right" v-if="postBelongsToUser">
-                    <span class="btn btn-warning">
+                    <span class="btn btn-warning" @click.prevent="goToUpdate(post.id)">
                         Edit
                     </span>
                     <span class="btn btn-danger ml-2" @click="deletePost(post.id)">
@@ -68,6 +68,10 @@ export default {
                     appendToast: true
                 })
             }
+        },
+        async goToUpdate(id){
+
+            await this.$router.push({ name: 'UpdatePost', params: { id: id } })
         }
     }
 

@@ -5,7 +5,7 @@ import Board from '../views/Board.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Topic from '../views/Topic.vue'
-
+import UpdatePost from '../views/UpdatePost.vue'
 
 Vue.use(VueRouter)
 
@@ -24,6 +24,14 @@ const routes = [
         path: '/topic/:id',
         name: 'Topic',
         component: Topic
+    },
+    {
+        path: '/post/:id',
+        name: 'UpdatePost',
+        component: UpdatePost,
+        meta: {
+            requiresAuth: true
+        }
     },
     {
         path: '/login',
@@ -51,17 +59,20 @@ const router = new VueRouter({
 })
 router.beforeEach((to, from, next) => {
     if(to.matched.some(record => record.meta.requiresAuth)) {
+
         if (localStorage.getItem('token') == null) {
             next({
-                name: '/Login',
+                name: 'Login',
             })
+        } else {
+            next();
         }
     } else if(to.matched.some(record => record.meta.guest)) {
         if(localStorage.getItem('token') == null){
-            next()
+            next();
         }
         else{
-            next({ name: 'Home'})
+            next({ name: 'Home'});
         }
     }else {
         next()
