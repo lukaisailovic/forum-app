@@ -47,9 +47,14 @@ const auth = {
                 });
                 if (res.status === 200){
                     commit('setUser',res.data.user)
+                } else {
+                    commit('setUser',null);
+                    localStorage.removeItem('token');
                 }
             } catch (error){
                 console.log(error)
+                commit('setUser',null);
+                localStorage.removeItem('token');
             } finally {
                 commit('setLoading',false)
             }
