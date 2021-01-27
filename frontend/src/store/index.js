@@ -16,7 +16,11 @@ export default new Vuex.Store({
         selectedBoardId: null,
         selectedBoard: null
     },
-    getters: {},
+    getters: {
+        getSelectedBoard: state => {
+            return state.selectedBoard;
+        }
+    },
     mutations: {
         setBoards: (state, boards) => {
             state.boards = boards;

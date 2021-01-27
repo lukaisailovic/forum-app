@@ -1,5 +1,10 @@
 <template>
     <div class="topic" v-if="topic !== null">
+        <b-row v-if="board !== null">
+            <b-col>
+                <router-link class="btn btn-outline-secondary mb-3" :to="{name:'Board',params: { id: board.id }}">Back to {{board.name}} board</router-link>
+            </b-col>
+        </b-row>
         <table class="table">
             <tbody>
             <tr>
@@ -38,7 +43,8 @@ export default {
     },
     computed: {
         ...mapGetters({
-            topic: 'topic/getSelectedTopic'
+            topic: 'topic/getSelectedTopic',
+            board: 'getSelectedBoard',
         }),
         posts() {
             if (this.topic == null) {
