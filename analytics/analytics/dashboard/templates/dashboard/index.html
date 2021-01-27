@@ -1,0 +1,45 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<div class="row mt-2">
+    <div class="col">
+        <h1>
+            Analytics
+        </h1>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col">
+        <p>
+            {{stats.userStats.count}}
+        </p>
+        <h5>
+            Users
+        </h5>
+    </div>
+    <div class="col">
+        <p>
+            {{stats.postStats.count}}
+        </p>
+        <h5>
+            Posts
+        </h5>
+    </div>
+    <div class="col">
+        <p>
+            {{stats.boardStats.count}}
+        </p>
+        <h5>
+            Boards
+        </h5>
+    </div>
+    <div class="col">
+        <p>
+            {{stats.topicStats.count}}
+        </p>
+        <h5>
+            Topics
+        </h5>
+    </div>
+</div>
+{% endblock %}
