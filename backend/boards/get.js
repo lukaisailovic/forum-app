@@ -8,9 +8,11 @@ module.exports = async (req,res) => {
         });
     }
     const board = await Board.findOne({
+        subQuery:false,
         where: {
             id
         },
+
         attributes: ['id','name','description'],
         include: {
             model: Topic,
@@ -27,8 +29,9 @@ module.exports = async (req,res) => {
                         attributes: ['username','id']
                     }
                 }
-            ]
+            ],
         },
+        order: [[Topic,Post, 'createdAt', 'DESC']]
 
     });
     res.json({
