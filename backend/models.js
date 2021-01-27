@@ -51,13 +51,13 @@ const Post = db.define('posts', {
 /**
  * Relations
  */
-Topic.belongsTo(Board);
+Topic.belongsTo(Board,{ onDelete: 'cascade', onUpdate: 'no action', hooks: true });
 Board.hasMany(Topic);
-Post.belongsTo(User);
+Post.belongsTo(User,{ onDelete: 'cascade', onUpdate: 'no action', hooks: true });
 User.hasMany(Post);
-Post.belongsTo(Topic);
+Post.belongsTo(Topic,{ onDelete: 'cascade', onUpdate: 'no action', hooks: true });
 Topic.hasMany(Post);
-Topic.belongsTo(User);
+Topic.belongsTo(User,{ onDelete: 'cascade', onUpdate: 'no action', hooks: true });
 User.hasMany(Topic);
 
 exports.Topic = Topic;
