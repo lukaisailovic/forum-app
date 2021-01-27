@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Board from '../views/Board.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
+import Topic from '../views/Topic.vue'
+
 
 Vue.use(VueRouter)
 
@@ -17,6 +19,11 @@ const routes = [
         path: '/board/:id',
         name: 'Board',
         component: Board
+    },
+    {
+        path: '/topic/:id',
+        name: 'Topic',
+        component: Topic
     },
     {
         path: '/login',

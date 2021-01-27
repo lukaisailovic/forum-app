@@ -11,7 +11,7 @@
             <b-col>
                 <b-table  hover :items="filteredTopics" :fields="fields">
                     <template #cell(title)="data">
-                        <router-link to="/" class="text-decoration-none text-dark">
+                        <router-link :to="{ name: 'Topic', params: { id: data.item.id }}" class="text-decoration-none text-dark">
                             {{ data.item.title}}
                         </router-link>
                     </template>
@@ -83,6 +83,7 @@ export default {
                     }
                 }
                 topics.push({
+                    id: topic.id,
                     title: topic.title,
                     createdAt: topic.createdAt,
                     startedBy: topic.user.username,
