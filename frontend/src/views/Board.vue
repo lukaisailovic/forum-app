@@ -1,6 +1,6 @@
 <template>
     <div class="board">
-        <Topics :board="board"/>
+        <Topics :board="board" v-if="board !== null"/>
     </div>
 </template>
 
