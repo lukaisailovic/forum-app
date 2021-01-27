@@ -51,6 +51,27 @@ const topic = {
                 console.log(error)
                 return false;
             }
+        },
+        async deleteTopic({state, commit}, topicId){
+            commit('setSelectedTopicId',null);
+            commit('setSelectedTopic',null);
+            try {
+                const token = localStorage.getItem('token');
+                if (token == null){
+                    return false;
+                }
+                const res = await axios.delete(`topic/${topicId}`,{
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (res.status === 200) {
+                    return true;
+                }
+            } catch (error) {
+                console.log(error)
+                return false;
+            }
         }
     }
 };

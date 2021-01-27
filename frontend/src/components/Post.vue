@@ -6,8 +6,8 @@
                 <avatar :username="post.user.username" class="ml-3 my-2"></avatar>
                 {{ post.user.username }}
             </td>
-            <td>
-                <p class="p-4">
+            <td style="width: 100%">
+                <p class="p-4" >
                     {{ post.content }}
                 </p>
                 <p class="text-right" v-if="postBelongsToUser">

@@ -1,24 +1,24 @@
-const {Post} = require('../models');
+const {Topic} = require('../models');
 module.exports = async (req,res) => {
 
     const id = req.params.id;
     if (id === undefined || id === '' || id === null) {
         res.status(400).json({
-            message: 'Post id is required'
+            message: 'Topic id is required'
         });
     }
-    const post = await Post.findOne({
+    const topic = await Topic.findOne({
         where: {
             id,
             userId: req.user.id
         }
     });
-    if (post == null){
+    if (topic == null){
         res.status(400).json({
-            message: 'Post with that id does not exist'
+            message: 'Topic with that id does not exist'
         });
     }
-     await Post.destroy({
+    await Topic.destroy({
         where: {
             id,
             userId: req.user.id

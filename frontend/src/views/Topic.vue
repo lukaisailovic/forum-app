@@ -23,6 +23,11 @@
                     </p>
                 </td>
             </tr>
+            <tr v-if="topicBelongsToUser">
+                <td class="text-right">
+                    <a href="#" class="text-danger" @click.prevent="deleteTopic">Delete</a>
+                </td>
+            </tr>
             <Posts :posts="topic.posts"/>
             </tbody>
         </table>
@@ -45,21 +50,46 @@ export default {
         ...mapGetters({
             topic: 'topic/getSelectedTopic',
             board: 'getSelectedBoard',
+            user: "auth/getUser"
         }),
         posts() {
             if (this.topic == null) {
                 return [];
             }
             return this.topic.posts;
+        },
+        topicBelongsToUser(){
+            if (this.user == null){
+                return false;
+            }
+            return this.topic.user.id === this.user.id;
         }
     },
     methods: {
         ...mapActions({
-            fetchSelectedTopic: 'topic/fetchSelectedTopic'
+            fetchSelectedTopic: 'topic/fetchSelectedTopic',
+            removeTopic: 'topic/deleteTopic'
         }),
         ...mapMutations({
             setSelectedTopicId: 'topic/setSelectedTopicId'
-        })
+        }),
+        async deleteTopic(){
+            const res = await this.removeTopic(this.topic.id);
+            if (res === true){
+                if (this.board === null){
+                    return await this.$router.push('/');
+                }
+                return await this.$router.push({ name: 'Board', params: { id: this.board.id } });
+            } else {
+                this.$bvToast.toast('Could not delete topic', {
+                    title: 'Error action',
+                    variant: 'danger',
+                    solid: true,
+                    autoHideDelay: 3000,
+                    appendToast: true
+                })
+            }
+        }
     },
     async mounted() {
         const topicId = this.$route.params.id;
