@@ -4,7 +4,7 @@ module.exports = async (req,res) => {
     const id = req.params.id;
     if (id === undefined || id === '' || id === null) {
         res.status(400).json({
-            message: 'Note id is required'
+            message: 'Board id is required'
         });
     }
     const board = await Board.findOne({

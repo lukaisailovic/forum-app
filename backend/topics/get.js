@@ -20,7 +20,7 @@ module.exports = async (req,res) => {
             },
             {
                 model: Post,
-                attributes: ['content','createdAt'],
+                attributes: ['content','createdAt','id'],
                 include: [
                     {
                         model: User,
