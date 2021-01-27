@@ -22,7 +22,7 @@
                            <b-dropdown-item href="#">Profile</b-dropdown-item>
                            <b-dropdown-item href="#" @click.prevent="logOut">Sign Out</b-dropdown-item>
                        </b-nav-item-dropdown>
-                       <b-nav-item to="/" v-if="!isLoggedIn">Login</b-nav-item>
+                       <b-nav-item :to="{ name: 'Login'}" v-if="!isLoggedIn">Login</b-nav-item>
                        <b-nav-item to="/" v-if="!isLoggedIn">Register</b-nav-item>
                    </b-navbar-nav>
                </b-collapse>
