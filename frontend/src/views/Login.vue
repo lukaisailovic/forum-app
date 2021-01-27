@@ -71,7 +71,7 @@ export default {
                 if (res.status === 200) {
                     localStorage.setItem('token',res.data.token);
                     await this.$store.dispatch('auth/fetchUser');
-                    this.$router.push('/')
+                    await this.$router.push('/')
                 } else {
                     console.log(res.data)
                     this.$bvToast.toast(res.data.message, {
