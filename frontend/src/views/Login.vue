@@ -2,7 +2,10 @@
     <div class="login">
         <b-row class="justify-content-center mt-5">
             <b-col md="4">
-
+                <h4 class="mb-3">
+                    Login
+                </h4>
+                <hr class="mb-4">
                 <b-form @submit.prevent="onSubmit">
                     <b-form-group
                         id="username-input-group"
@@ -23,7 +26,7 @@
 
                     <b-form-group
                         id="password-input-group"
-                        label="Username:"
+                        label="Password:"
                         label-for="password-input"
 
                     >
@@ -37,7 +40,7 @@
                             max="20"
                         ></b-form-input>
                     </b-form-group>
-                    <b-button type="submit" variant="primary">Log in</b-button>
+                    <b-button type="submit" variant="primary" block>Log in</b-button>
                 </b-form>
 
             </b-col>
@@ -46,7 +49,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from '../store/axios';
 
 export default {
     name: 'Login',
