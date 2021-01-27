@@ -17,9 +17,9 @@
                        <b-nav-item-dropdown right v-if="isLoggedIn && !isLoading">
                            <!-- Using 'button-content' slot -->
                            <template #button-content>
-                               <em>User</em>
+                               <em>{{user.username}} </em>
                            </template>
-                           <b-dropdown-item href="#">Profile</b-dropdown-item>
+                           <b-dropdown-item :to="{ name: 'Profile', params: { id: user.id}}">Profile</b-dropdown-item>
                            <b-dropdown-item href="#" @click.prevent="logOut">Sign Out</b-dropdown-item>
                        </b-nav-item-dropdown>
                        <b-nav-item :to="{ name: 'Login'}" v-if="!isLoggedIn">Login</b-nav-item>
@@ -39,7 +39,7 @@ export default {
     computed: {
         ...mapGetters({
             isLoggedIn: 'auth/isLoggedIn',
-            getUser: 'auth/getUser',
+            user: 'auth/getUser',
             isLoading: 'auth/isLoading'
         })
     },

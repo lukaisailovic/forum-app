@@ -4,10 +4,14 @@
         <tr>
             <td class="text-center">
                 <avatar :username="post.user.username" class="ml-3 my-2"></avatar>
-                {{ post.user.username }}
+                <span class="ml-2">
+                      <router-link :to="{ name: 'Profile', params: { id:  post.user.id}}" class=" text-dark">
+                            {{  post.user.username}}
+                      </router-link>
+               </span>
             </td>
             <td style="width: 100%">
-                <p class="p-4" >
+                <p class="p-4">
                     {{ post.content }}
                 </p>
                 <p class="text-right" v-if="postBelongsToUser">
@@ -38,8 +42,8 @@ export default {
         ...mapGetters({
             user: "auth/getUser"
         }),
-        postBelongsToUser(){
-            if (this.user == null){
+        postBelongsToUser() {
+            if (this.user == null) {
                 return false;
             }
             return this.post.user.id === this.user.id;
@@ -49,9 +53,9 @@ export default {
         ...mapActions({
             deleteFromDatabase: 'topic/deletePost'
         }),
-        async deletePost(id){
+        async deletePost(id) {
             const res = await this.deleteFromDatabase(id);
-            if (res){
+            if (res) {
                 this.$bvToast.toast('Post deleted successfully', {
                     title: 'Success action',
                     variant: 'success',
@@ -69,9 +73,9 @@ export default {
                 })
             }
         },
-        async goToUpdate(id){
+        async goToUpdate(id) {
 
-            await this.$router.push({ name: 'UpdatePost', params: { id: id } })
+            await this.$router.push({name: 'UpdatePost', params: {id: id}})
         }
     }
 

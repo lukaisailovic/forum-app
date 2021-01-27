@@ -19,7 +19,7 @@
                         </router-link>
                     </template>
                     <template #cell(startedBy)="data">
-                        <router-link to="/" class=" text-dark">
+                        <router-link :to="{ name: 'Profile', params: { id: data.item.startedById}}" class=" text-dark">
                             {{ data.item.startedBy}}
                         </router-link>
                     </template>
@@ -27,7 +27,7 @@
                         <div v-if="data.item.lastPost !== null">
                             <p>
                                 At {{data.item.lastPost.time}}<br>
-                                <router-link to="/">
+                                <router-link :to="{ name: 'Profile', params: { id: data.item.lastPost.user.id}}">
                                     By {{data.item.lastPost.user.username}}
                                 </router-link>
 
@@ -95,6 +95,7 @@ export default {
                     title: topic.title,
                     createdAt: topic.createdAt,
                     startedBy: topic.user.username,
+                    startedById: topic.user.id,
                     repliesCount: topic.posts.length,
                     lastPost
                 })

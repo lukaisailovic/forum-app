@@ -7,6 +7,7 @@ import Register from '../views/Register.vue'
 import Topic from '../views/Topic.vue'
 import UpdatePost from '../views/UpdatePost.vue'
 import CreateTopic from '../views/CreateTopic.vue'
+import Profile from '../views/Profile.vue'
 
 Vue.use(VueRouter)
 
@@ -25,6 +26,11 @@ const routes = [
         path: '/topic/:id',
         name: 'Topic',
         component: Topic
+    },
+    {
+        path: '/user/:id',
+        name: 'Profile',
+        component: Profile
     },
     {
         path: '/post/:id',
