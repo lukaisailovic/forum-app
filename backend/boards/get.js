@@ -1,4 +1,4 @@
-const {Board,Topic,User} = require('../models');
+const {Board,Topic,User,Post} = require('../models');
 module.exports = async (req,res) => {
 
     const id = req.params.id;
@@ -14,10 +14,20 @@ module.exports = async (req,res) => {
         attributes: ['id','name','description'],
         include: {
             model: Topic,
-            include: {
-                model: User,
-                attributes: ['username','id']
-            }
+            include: [
+                {
+                    model: User,
+                    attributes: ['username','id']
+                },
+                {
+                    model: Post,
+                    attributes: ['content','createdAt'],
+                    include: {
+                        model: User,
+                        attributes: ['username','id']
+                    }
+                }
+            ]
         },
 
     });
