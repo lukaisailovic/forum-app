@@ -5,6 +5,9 @@
                 <h4>
                     Topics of board: {{board.name}}
                 </h4>
+                <p class="mt-3" v-if="user !== null">
+                    <router-link  class="btn btn-info" :to="{name: 'CreateTopic', params: {id: board.id}}">Create topic</router-link>
+                </p>
             </b-col>
         </b-row>
         <b-row>
@@ -42,6 +45,8 @@
 
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
     name: 'Boards',
     props: ['board'],
@@ -68,6 +73,9 @@ export default {
         }
     },
     computed: {
+        ...mapGetters({
+            user: "auth/getUser"
+        }),
         topics(){
             return this.board.topics;
         },

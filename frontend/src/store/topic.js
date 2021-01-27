@@ -32,6 +32,30 @@ const topic = {
                 console.log(error)
             }
         },
+        async createTopic({state, commit},payload){
+            try {
+                let token = localStorage.getItem('token');
+                if (token == null) {
+                    return false;
+                }
+                const res = await axios.post(`topic/${payload.boardId}`,
+                    {
+                        title: payload.title,
+                        content: payload.content
+                    },
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                if (res.status === 200 || res.status === 201) {
+                    return res;
+                }
+            } catch (error) {
+                console.log(error)
+                return false;
+            }
+        },
         async deletePost({state, commit, dispatch}, postId){
             try {
                 const token = localStorage.getItem('token');

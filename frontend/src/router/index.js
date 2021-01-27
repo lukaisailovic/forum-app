@@ -6,6 +6,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Topic from '../views/Topic.vue'
 import UpdatePost from '../views/UpdatePost.vue'
+import CreateTopic from '../views/CreateTopic.vue'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,14 @@ const routes = [
         path: '/post/:id',
         name: 'UpdatePost',
         component: UpdatePost,
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/create/topic/:id',
+        name: 'CreateTopic',
+        component: CreateTopic,
         meta: {
             requiresAuth: true
         }
@@ -58,7 +67,7 @@ const router = new VueRouter({
     routes
 })
 router.beforeEach((to, from, next) => {
-    if(to.matched.some(record => record.meta.requiresAuth)) {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
 
         if (localStorage.getItem('token') == null) {
             next({
@@ -67,14 +76,13 @@ router.beforeEach((to, from, next) => {
         } else {
             next();
         }
-    } else if(to.matched.some(record => record.meta.guest)) {
-        if(localStorage.getItem('token') == null){
+    } else if (to.matched.some(record => record.meta.guest)) {
+        if (localStorage.getItem('token') == null) {
             next();
+        } else {
+            next({name: 'Home'});
         }
-        else{
-            next({ name: 'Home'});
-        }
-    }else {
+    } else {
         next()
     }
 })
