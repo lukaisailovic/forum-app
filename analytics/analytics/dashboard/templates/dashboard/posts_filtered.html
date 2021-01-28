@@ -1,0 +1,68 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<div class="row my-4">
+    <div class="col">
+        <a href="{% url 'dashboard_index'  %}" class="btn btn-outline-secondary">Back to dashboard</a>
+        <a href="{% url 'dashboard_posts'  %}" class="btn btn-outline-secondary">Back to posts</a>
+
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col">
+        <h4>
+            Filtered posts
+        </h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>
+            Displaying all posts where {{filter_model}} ID is {{filter_id}}
+        </p>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col">
+
+        <table class="table">
+            <thead>
+            <th>
+                Post ID
+            </th>
+            <th>
+                Post content
+            </th>
+            <th>
+                User ID
+            </th>
+            <th>
+                Topic ID
+            </th>
+            </thead>
+            <tbody>
+            {% for post in posts %}
+                <tr>
+                    <td>
+                        {{post.id}}
+                    </td>
+                    <td>
+                        {{post.content}}
+                    </td>
+                    <td>
+                        {{post.user_id}}
+                    </td>
+                    <td>
+                        {{post.topic_id}}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

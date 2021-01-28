@@ -1,0 +1,145 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<div class="row my-4">
+    <div class="col">
+        <a href="{% url 'dashboard_index'  %}" class="btn btn-outline-secondary">Back</a>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col">
+        <h4>
+            Post details
+        </h4>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h4>
+            New Posts
+        </h4>
+        <canvas id="canvas"></canvas>
+    </div>
+    <div class="col-md-6">
+        <h4>
+            Display filtered posts:
+        </h4>
+        <form action="{% url 'dashboard_posts_filtered_request' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="{{ form.model.id_for_label }}">{{ form.model.label_tag }}:</label>
+                <select name="{{ form.model.name }}" id="{{ form.model.id_for_label }}" required class="form-control">
+                    <option value="User">user</option>
+                    <option value="Topic">topic</option>
+                </select>
+                {% if form.model.errors %}
+                <div class="alert alert-danger mt-2">
+                    <ul style="text-align: left">
+                        {% for error in form.model.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.id.id_for_label }}">{{ form.id.label_tag }}:</label>
+                <input type="number" name="{{ form.id.name }}" required id="{{ form.id.id_for_label }}" min="1" max="999999" class="form-control">
+            </div>
+            {% if form.id.errors %}
+                <div class="alert alert-danger mt-2">
+                    <ul style="text-align: left">
+                        {% for error in form.id.errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+             <div class="form-group my-2">
+                <button type="submit" class="btn btn-success">Display filtered posts</button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+        integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+        crossorigin="anonymous"></script>
+<script>
+    let postsPerday = {{ postsPerDay|safe}}
+
+    let days = [];
+    for (let i = 1; i <= 31; i++) {
+        days.push('Day ' + i);
+    }
+
+    let data = [];
+
+    function getCountForDay(day) {
+        for (const count of postsPerday) {
+            if (count.day === day) {
+                return count.count;
+            }
+        }
+        return 0;
+    }
+
+    for (let i = 1; i <= 31; i++) {
+        data[i] = getCountForDay(i);
+    }
+    console.log(postsPerday)
+
+    const config = {
+        type: 'line',
+        data: {
+            labels: days,
+            datasets: [{
+                label: 'Posts',
+                backgroundColor: 'rgb(75, 192, 192)',
+                borderColor: 'rgb(75, 192, 192)',
+                steppedLine: 'middle',
+                data: data,
+                fill: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Number of new posts per day'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Day'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Number of Posts'
+                    }
+                }]
+            }
+        }
+    };
+
+    window.onload = function () {
+        var ctx = document.getElementById('canvas').getContext('2d');
+        window.myLine = new Chart(ctx, config);
+    };
+</script>
+
+{% endblock %}

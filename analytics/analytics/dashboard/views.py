@@ -1,8 +1,9 @@
 from django.db.models import Count
-from django.shortcuts import render
-from django.db.models.functions import ExtractMonth
-
+from django.shortcuts import render, redirect
+from django.db.models.functions import ExtractDay,ExtractMonth
 from django.http import HttpResponse
+from .forms import PostFilterForm
+
 from .models import User, Post, Board, Topic
 
 
@@ -62,3 +63,30 @@ def topic_details(req):
         posts_per_topic_title.append({'count':data['count'],'title': found_topic['title'], 'id': found_topic['id']})
     # return HttpResponse()
     return render(req, 'dashboard/topics.html', {'topicsPerMonth': list(topics_per_month), 'posts_per_topic': posts_per_topic_title})
+
+def post_details(req):
+    posts_per_day = Post.objects.annotate(day=ExtractDay('created_at')).values('day').annotate(
+        count=Count('id')).order_by('day')
+    form = PostFilterForm()
+    return render(req,'dashboard/posts.html',{'postsPerDay': list(posts_per_day),'form': form})
+
+def post_filtered_form_req(req):
+    if req.method == 'GET':
+        return redirect('dashboard_posts')
+    form = PostFilterForm(req.POST)
+    if form.is_valid():
+        model = form.cleaned_data['model'].lower()
+        id = form.cleaned_data['id']
+        return redirect('dashboard_posts_filtered',id=id,model=model)
+    else:
+        return render(req, 'dashboard/posts.html', {'form': form})
+
+def posts_filtered_display(req,id,model):
+    data = []
+    if model.lower() == 'topic':
+        data = Post.objects.filter(topic_id=id)
+    elif model == 'user':
+        data = Post.objects.filter(user_id=id)
+
+    return render(req, 'dashboard/posts_filtered.html',
+                  {'posts': data, 'filter_model': model, 'filter_id': id})
