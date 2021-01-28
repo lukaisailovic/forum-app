@@ -2,7 +2,8 @@ from django.db.models import Count
 from django.shortcuts import render, redirect
 from django.db.models.functions import ExtractDay,ExtractMonth
 from django.http import HttpResponse
-from .forms import PostFilterForm
+from .forms import PostFilterForm, BoardForm
+from django.contrib import messages
 
 from .models import User, Post, Board, Topic
 
@@ -90,3 +91,53 @@ def posts_filtered_display(req,id,model):
 
     return render(req, 'dashboard/posts_filtered.html',
                   {'posts': data, 'filter_model': model, 'filter_id': id})
+
+
+def boards(req):
+    all_boards = Board.objects.all()
+    topics_per_board = Topic.objects.values('board_id').annotate(
+        count=Count('id')).order_by('-count')
+    topics_per_board_title = []
+    for data in topics_per_board:
+        found_board = None
+        for board in all_boards:
+            if board.id == data['board_id']:
+                found_board = board
+                topics_per_board_title.append({'count': data['count'], 'title': found_board.name, 'id': found_board.id,'description': found_board.description})
+    if req.method == 'POST':
+        form = BoardForm(req.POST)
+        if form.is_valid():
+            board = Board()
+            board.name = form.cleaned_data['name']
+            board.description = form.cleaned_data['description']
+            board.save()
+            messages.success(req, 'Board created successfully')
+            all_boards = Board.objects.all()
+            form = BoardForm()
+    else:
+        form = BoardForm()
+    return render(req,'dashboard/boards.html',{'topicsPerBoard': topics_per_board_title, 'boards': all_boards, 'form': form})
+
+def edit_board(req, id):
+    if req.method == 'POST':
+        form = BoardForm(req.POST)
+        if form.is_valid():
+            board = Board.objects.get(id=id)
+            board.name = form.cleaned_data['name']
+            board.description = form.cleaned_data['description']
+            board.save()
+            messages.success(req, 'Board edited successfully')
+            return redirect('dashboard_boards')
+        else:
+            return render(req, 'dashboard/boards_edit.html', {'form': form,'id':id})
+    else:
+        board = Board.objects.get(id=id)
+        form = BoardForm(instance=board)
+        return render(req, 'dashboard/boards_edit.html',{'form':form,'id':id})
+
+
+def delete_board(req, id):
+    board = Board.objects.get(id=id)
+    board.delete()
+    messages.success(req, 'Board deleted successfully')
+    return redirect('dashboard_boards')
