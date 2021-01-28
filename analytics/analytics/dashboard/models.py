@@ -5,7 +5,6 @@ class User(models.Model):
     username = models.CharField(max_length=255)
     created_at = models.DateTimeField(db_column='createdAt')
     updated_at = models.DateTimeField(db_column='updatedAt')
-
     class Meta:
         db_table = "users"
 
@@ -22,9 +21,9 @@ class Board(models.Model):
 
 class Post(models.Model):
     id = models.IntegerField
-    userId = models.IntegerField
-    topicId = models.IntegerField
-    content = models.TextField
+    user_id = models.IntegerField(db_column='userId')
+    topic_id = models.IntegerField(db_column='topicId')
+    content = models.TextField(db_column='content')
     created_at = models.DateTimeField(db_column='createdAt')
     updated_at = models.DateTimeField(db_column='updatedAt')
 
