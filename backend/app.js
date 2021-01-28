@@ -1,6 +1,9 @@
 require('dotenv').config()
 const express = require('express');
 const sync = require('./database/sync')
+const history = require('connect-history-api-fallback')
+const path = require('path')
+
 const routers = [
     require('./users'),
     require('./boards'),
@@ -21,17 +24,22 @@ class App {
 
             next();
         });
-        this.app.use(express.static('public'));
+        const staticMiddleware = express.static(path.join(__dirname,'dist'));
+        this.app.use(staticMiddleware);
+        this.app.use(history());
+        this.app.use(staticMiddleware);
+
+
     }
     setupRoutes(){
         for (const router of routers) {
             this.app.use(router);
         }
-        this.app.get('/',(req, res)=>{
-            res.json({
-                'hello': 'world'
-            })
-        })
+        // this.app.get('/',(req, res)=>{
+        //     res.json({
+        //         'hello': 'world'
+        //     })
+        // })
     }
     start(){
         this.setupMiddleware()
