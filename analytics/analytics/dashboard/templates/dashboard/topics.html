@@ -1,0 +1,111 @@
+{% extends 'master.html' %}
+
+{% block content %}
+<div class="row my-4">
+    <div class="col">
+        <a href="{% url 'dashboard_index'  %}" class="btn btn-outline-secondary">Back</a>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col">
+        <h4>
+            Topic details
+        </h4>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-md-6">
+        <h4>
+            New topics
+        </h4>
+        <canvas id="canvas"></canvas>
+    </div>
+    <div class="col-md-6">
+         <h4>
+            Top 5 topics with most replies
+        </h4>
+        <ul class="list-group mt-5">
+             {% for topic in posts_per_topic %}
+            <a href="#{{topic.id}}" class="text-decoration-none text-dark">
+                <li class="list-group-item">{{topic.title}} <em>({{topic.count}} posts)</em></li>
+            </a>
+            {% endfor %}
+        </ul>
+
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
+        integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+        crossorigin="anonymous"></script>
+<script>
+    let topicsPerMonth = {{topicsPerMonth | safe}}
+
+    ;
+    const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    let data = [];
+
+    function getCountForMonth(month) {
+        for (const count of topicsPerMonth) {
+            if (count.month === month) {
+                return count.count;
+            }
+        }
+        return 0;
+    }
+
+    for (let i = 0; i < 12; i++) {
+        data[i] = getCountForMonth(i + 1);
+    }
+    console.log(topicsPerMonth)
+
+    const config = {
+        type: 'line',
+        data: {
+            labels: MONTHS,
+            datasets: [{
+                label: 'Topics',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: data,
+                fill: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Number of new topics per month'
+            },
+            tooltips: {
+                mode: 'index',
+                intersect: false,
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Month'
+                    }
+                }],
+                yAxes: [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Number of topics'
+                    }
+                }]
+            }
+        }
+    };
+
+    window.onload = function () {
+        var ctx = document.getElementById('canvas').getContext('2d');
+        window.myLine = new Chart(ctx, config);
+    };
+</script>
+{% endblock %}
